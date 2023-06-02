@@ -2,13 +2,15 @@ package org.example.orderservice.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.devh.boot.grpc.client.inject.GrpcClient;
+import org.example.inventory.InventoryRequest;
+import org.example.inventory.InventoryServiceGrpc;
 import org.example.orderservice.exception.NotInStockException;
 import org.example.orderservice.model.Order;
 import org.example.orderservice.model.OrderItem;
 import org.example.orderservice.repository.OrderRepo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
 
@@ -17,17 +19,15 @@ import java.util.List;
 @Slf4j
 public class OrderService {
     private final OrderRepo orderRepo;
-    private final WebClient.Builder webClientBuilder;
+    @GrpcClient("inventory")
+    private InventoryServiceGrpc.InventoryServiceBlockingStub inventoryStub;
 
     @Transactional
     public void createOrder(Order order) {
         List<Long> productIds = order.getOrderItems().stream().map(OrderItem::getProductId).toList();
-        Boolean allInStock = webClientBuilder.build().get()
-                .uri("http://inventory-service/api/inventories",
-                        uriBuilder -> uriBuilder.queryParam("product-id", productIds).build())
-                .retrieve()
-                .bodyToMono(Boolean.class)
-                .block();
+
+        InventoryRequest request = InventoryRequest.newBuilder().addAllProductId(productIds).build();
+        Boolean allInStock = inventoryStub.inventory(request).getAllInStock();
 
         if (Boolean.FALSE.equals(allInStock)) {
             throw new NotInStockException("Product is not in stock, please try again later");

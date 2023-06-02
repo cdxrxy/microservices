@@ -6,7 +6,7 @@ import org.example.orderservice.model.Order;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-06-02T18:41:07+0600",
+    date = "2023-06-02T20:07:31+0600",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 19.0.2 (Oracle Corporation)"
 )
 public class OrderMapperImpl implements OrderMapper {

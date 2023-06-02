@@ -20,9 +20,10 @@
         </processorPath>
         <module name="api-gateway" />
         <module name="product-service" />
-        <module name="discovery-server" />
-        <module name="inventory-service" />
         <module name="order-service" />
+        <module name="inventory-service" />
+        <module name="discovery-server" />
+        <module name="grpc-interface" />
       </profile>
     </annotationProcessing>
   </component>
@@ -30,6 +31,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="api-gateway" options="-parameters" />
       <module name="discovery-server" options="-parameters" />
+      <module name="grpc-interface" options="-parameters" />
       <module name="inventory-service" options="-parameters" />
       <module name="microservices" options="-parameters" />
       <module name="order-service" options="-parameters" />

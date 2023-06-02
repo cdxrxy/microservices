@@ -6,7 +6,7 @@ import org.example.inventoryservice.model.Inventory;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-06-02T18:39:24+0600",
+    date = "2023-06-02T20:07:25+0600",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 19.0.2 (Oracle Corporation)"
 )
 public class InventoryMapperImpl implements InventoryMapper {
