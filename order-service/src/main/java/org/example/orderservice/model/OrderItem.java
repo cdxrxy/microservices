@@ -16,7 +16,6 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Entity
 @Table(name = "orders_items")
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderItem {

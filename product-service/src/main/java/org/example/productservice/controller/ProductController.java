@@ -1,8 +1,9 @@
 package org.example.productservice.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.example.productservice.dto.request.ProductRequest;
-import org.example.productservice.dto.response.ProductResponse;
+import org.example.productservice.dto.ProductDto;
+import org.example.productservice.mapper.ProductListMapper;
+import org.example.productservice.mapper.ProductMapper;
 import org.example.productservice.service.ProductService;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,13 +20,19 @@ public class ProductController {
 
     @PostMapping
     @ResponseStatus(CREATED)
-    public void createProduct(@RequestBody ProductRequest productRequest) {
-        productService.createProduct(productRequest);
+    public void createProduct(@RequestBody ProductDto productDto) {
+        productService.createProduct(
+                ProductMapper.INSTANCE
+                        .productDtoToProduct(productDto)
+        );
     }
 
     @GetMapping
     @ResponseStatus(OK)
-    public List<ProductResponse> getAllProducts() {
-        return productService.getAllProducts();
+    public List<ProductDto> getAllProducts() {
+        return ProductListMapper.INSTANCE
+                .productListToProductDtoList(
+                        productService.getAllProducts()
+                );
     }
 }

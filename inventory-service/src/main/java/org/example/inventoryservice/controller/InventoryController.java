@@ -1,7 +1,8 @@
 package org.example.inventoryservice.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.example.inventoryservice.dto.request.InventoryRequest;
+import org.example.inventoryservice.dto.InventoryDto;
+import org.example.inventoryservice.mapper.InventoryMapper;
 import org.example.inventoryservice.service.InventoryService;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,8 +19,11 @@ public class InventoryController {
 
     @PostMapping
     @ResponseStatus(CREATED)
-    public void createInventory(@RequestBody InventoryRequest inventoryRequest) {
-        inventoryService.createInventory(inventoryRequest);
+    public void createInventory(@RequestBody InventoryDto inventoryDto) {
+        inventoryService.createInventory(
+                InventoryMapper.INSTANCE.
+                        inventoryDtoToInventory(inventoryDto)
+        );
     }
 
     @GetMapping

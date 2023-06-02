@@ -2,7 +2,6 @@ package org.example.inventoryservice.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.inventoryservice.dto.request.InventoryRequest;
 import org.example.inventoryservice.exception.InventoryAlreadyExistsException;
 import org.example.inventoryservice.model.Inventory;
 import org.example.inventoryservice.repository.InventoryRepo;
@@ -17,15 +16,11 @@ import java.util.List;
 public class InventoryService {
     private final InventoryRepo inventoryRepo;
 
-    public void createInventory(InventoryRequest inventoryRequest) {
-        if(inventoryRepo.existsByProductId(inventoryRequest.getProductId())) {
+    @Transactional
+    public void createInventory(Inventory inventory) {
+        if (inventoryRepo.existsByProductId(inventory.getProductId())) {
             throw new InventoryAlreadyExistsException("Inventory for this product already exists");
         }
-
-        Inventory inventory = Inventory.builder()
-                .productId(inventoryRequest.getProductId())
-                .quantity(inventoryRequest.getQuantity())
-                .build();
 
         inventoryRepo.save(inventory);
 
@@ -35,7 +30,7 @@ public class InventoryService {
     @Transactional(readOnly = true)
     public boolean allInStock(List<Long> productIds) {
         List<Inventory> result = inventoryRepo.findByProductIdIn(productIds);
-        if(result.isEmpty() || productIds.size() != result.size()) {
+        if (result.isEmpty() || productIds.size() != result.size()) {
             return false;
         }
 

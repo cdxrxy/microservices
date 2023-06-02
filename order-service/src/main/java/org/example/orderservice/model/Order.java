@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import java.util.List;
 
@@ -14,7 +16,6 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Entity
 @Table(name = "orders")
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Order {
@@ -22,5 +23,6 @@ public class Order {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
     @OneToMany(cascade = ALL)
+    @Fetch(FetchMode.SUBSELECT)
     private List<OrderItem> orderItems;
 }
